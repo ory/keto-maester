@@ -1,0 +1,18 @@
+apiVersion: keto.ory.sh/v1alpha1
+kind: ORYAccessControlPolicyRole
+metadata:
+  name: my-acp-role
+  namespace: default
+spec:
+  flavor: glob
+  members:
+    - admin
+    - joe
+    - mary
+  # optional
+  keto:
+    # all fields optional, fields present will override options passed
+    # to the main binary
+    url: http://keto.namespace.cluster.domain
+    port: 4444
+    endpoint: /engines

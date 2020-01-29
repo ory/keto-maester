@@ -1,0 +1,40 @@
+apiVersion: keto.ory.sh/v1alpha1
+kind: ORYAccessControlPolicy
+metadata:
+  name: my-acp
+  namespace: default
+spec:
+  flavor: glob
+  actions:
+    - my-org:my-action
+  resources:
+    - my-org:my-resource:*
+  subjects:
+    - admins
+    - owners
+  conditions:
+    # the key names here can be anything
+    remoteIP:
+      type: CIDRCondition
+      options:
+        cidr: 192.169.0.0/16
+    someKey:
+      type: StringEqualCondition
+      options:
+        matches: foo
+    someOtherKey:
+      type: StringMatchCondition
+      options:
+        equals: ".*foo+"
+    yetAnotherKey:
+      type: StringPairsEqualsCondition
+    owner:
+      type: EqualsSubjectCondition
+  effect: allow
+  # optional
+  keto:
+    # all fields optional, fields present will override options passed
+    # to the main binary
+    url: http://keto-api.namespace.cluster.domain
+    port: 4444
+    endpoint: /engines
